@@ -1,0 +1,52 @@
+# ==============================================================================
+# HIGH COURT OF KARNATAKA PIPELINE ACTIVE TRACKING LIST DEFINITIONS
+# ==============================================================================
+# INSTRUCTIONS:
+# - Add one search term per line.
+# - Lines starting with '#' or empty rows are automatically skipped.
+# - The matching search engine runs case-insensitively (e.g., 'state' matches 'STATE').
+# - The parsing script scans across the combined string of the Case Number,
+#   the full Petitioner list, and the Respondent list for every single record.
+
+# ------------------------------------------------------------------------------
+# TYPE A: PARTY NAME MATCHES (LITIGANTS)
+# ------------------------------------------------------------------------------
+# Searches individual names, corporate entity profiles, or government agencies.
+# Matches will hit if the string appears anywhere within the PET or RES column space.
+# Partial matching works natively: "Hegde" will pick up "Bipin Hegde" or "Hegde & Co".
+# Example: 
+# Gowramma
+# Infosys Limited
+# State of Karnataka
+
+# ------------------------------------------------------------------------------
+# TYPE B: ADVOCATE / ADVOCATE FIRM MATCHES
+# ------------------------------------------------------------------------------
+# The High Court of Karnataka causelist PDF embeds practicing counsel designations 
+# directly following or alongside the individual party blocks.
+# If you place a lawyer's name here, it will flag a match if they represent either side.
+# Tip: Use unique surnames or exact legal names to reduce noise.
+# Example: 
+# M/S Seshagiri Rao
+
+# ------------------------------------------------------------------------------
+# TYPE C: EXPLICIT CASE NUMBER MATCHES
+# ------------------------------------------------------------------------------
+# Useful if you are watching a specific active case number or monitoring an entire 
+# classification category branch inside a given Court Hall context.
+# Note: The tool automatically binds and parses structural parenthetical 
+# classifications (e.g., "WP (GM-CPC)" or "WP (CS)").
+# Example: 
+# WP 51432/2024
+
+# ------------------------------------------------------------------------------
+# TYPE D: CATEGORY / CLASSIFICATION MATCHES
+# ------------------------------------------------------------------------------
+# Useful if you are monitoring an entire 
+# classification category branch inside a given Court Hall context.
+# Note: The tool automatically binds and parses structural parenthetical 
+# classifications. Type the classification exactly as it appears in the causelist 
+# for the match to be successful. 
+# Example: 
+# (GM, CPC)
+# (MC, )

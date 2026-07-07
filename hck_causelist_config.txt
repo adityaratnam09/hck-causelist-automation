@@ -1,0 +1,65 @@
+# ==============================================================================
+# HIGH COURT OF KARNATAKA CAUSELIST CONFIGURATION PROFILE
+# ==============================================================================
+# INSTRUCTIONS:
+# - Lines beginning with '#' are comments and are completely ignored by the script.
+# - Key/Value definitions must use the format: KEY = VALUE
+# - Surrounding quote marks (either ' or ") are automatically cleaned and removed.
+# - Spaces directly before or after the '=' operator are stripped automatically.
+
+# --- NETWORK RESOLUTION TARGETS ---
+# The target secure URL pointing to the daily consolidated cause list PDF document.
+# By default, this points to the High Court of Karnataka Bengaluru Main Bench consolidation list.
+PDF_URL = "https://judiciary.karnataka.gov.in/pdfs/consolidatedCauselist/blrconsolidation.pdf"
+
+# --- LOCAL FILE STORAGE PATHS ---
+# The path where the raw downloaded PDF data stream will be locally mirrored.
+LOCAL_PDF_PATH = "./blrconsolidation.pdf"
+
+# The structured plain text file containing your active watchlist search terms.
+WATCHLIST_PATH = "./hck_causelist_watchlist.txt"
+
+# The destination path where the final analytical HTML visual report will be written.
+HTML_OUTPUT_PATH = "./causelist_search.html"
+
+# --- AUTOMATION SCHEDULE ---
+# The specific time of day when the background pipeline should automatically execute.
+# Must be specified in a strict 24-hour HH:MM format (e.g., 08:15, 14:30, or 18:30).
+# Examples:
+#   09:00 -> 9:00 AM
+#   13:15 -> 1:15 PM
+#   18:30 -> 6:30 PM
+#   21:00 -> 9:00 PM
+# Note: The master installation script reads this entry dynamically to build and 
+# register the underlying macOS launchd calendar interval rules.
+DAILY_RUN_TIME = 20:30
+
+# --- OUTBOUND EMAIL DISPATCH PROTOCOLS (SMTP) ---
+# The primary Google Gmail account used to authenticate and transmit outbound alert updates.
+#SENDER_EMAIL = "xxxxxxxx@gmail.com"
+
+# The 16-character secure App Password generated inside Google Account Settings.
+# Do NOT use your standard email password here. Generate an App Password via:
+# My Account -> Security -> 2-Step Verification -> App Passwords.
+# Spaces within the 16-character token are ignored automatically by Google.
+#SENDER_PASSWORD = "xxxx xxxx xxxx xxxx"
+
+# The target address or addresses that should receive the generated reports.
+# MULTIPLE RECIPIENTS CAPABILITY:
+# Alerts are delivered to the recipient email specified. 
+# To deliver alerts to multiple separate targets simultaneously, add them here
+# separated by a simple comma. Do not use array brackets or quotes.
+# Example: RECEIVER_EMAIL = user1@gmail.com, user2@yahoo.com, professional@firm.in
+#RECEIVER_EMAIL = "xxxxxxxx@gmail.com"
+
+# --- OUTBOUND SERVER CONNECTIONS ---
+# The canonical core SMTP network gateway link for Google Mail relays.
+SMTP_SERVER = "smtp.gmail.com"
+
+# The dedicated connection port managing explicit STARTTLS security handshakes.
+SMTP_PORT = 587
+
+# --- COMMUNICATIONS STYLING ---
+# The baseline Subject prefix used when compiling outbound mail alerts.
+# The total number of identified tracking matches will be dynamically appended.
+SUBJECT_TEMPLATE = "[ALERT] High Court of Karnataka Causelist Search:"
