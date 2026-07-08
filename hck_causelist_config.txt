@@ -20,7 +20,7 @@ LOCAL_PDF_PATH = "./blrconsolidation.pdf"
 WATCHLIST_PATH = "./hck_causelist_watchlist.txt"
 
 # The destination path where the final analytical HTML visual report will be written.
-HTML_OUTPUT_PATH = "./causelist_search.html"
+HTML_OUTPUT_PATH = "./hck_causelist_search.html"
 
 # --- AUTOMATION SCHEDULE ---
 # The specific time of day when the background pipeline should automatically execute.
