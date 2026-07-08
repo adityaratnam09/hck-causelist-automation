@@ -99,7 +99,7 @@ Download the repository as a ZIP or tarball from GitHub (the green **Code** butt
 
 ```bash
 git clone https://github.com/adityaratnam09/hck-causelist-automation.git
-cd cd hck-causelist-automation
+cd hck-causelist-automation
 ```
 
 ### Step 2 — Run the Setup Script
