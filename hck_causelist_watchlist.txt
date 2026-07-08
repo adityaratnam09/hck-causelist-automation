@@ -1,6 +1,6 @@
-# ==============================================================================
-# HIGH COURT OF KARNATAKA PIPELINE ACTIVE TRACKING LIST DEFINITIONS
-# ==============================================================================
+# =======================================================================================
+# HIGH COURT OF KARNATAKA CAUSELIST AUTOMATION PIPELINE ACTIVE TRACKING LIST DEFINITIONS
+# =======================================================================================
 # INSTRUCTIONS:
 # - Add one search term per line.
 # - Lines starting with '#' or empty rows are automatically skipped.
@@ -13,7 +13,7 @@
 # ------------------------------------------------------------------------------
 # Searches individual names, corporate entity profiles, or government agencies.
 # Matches will hit if the string appears anywhere within the PET or RES column space.
-# Partial matching works natively: "Hegde" will pick up "Bipin Hegde" or "Hegde & Co".
+# Partial matching works natively: "Hegde" will pick up "Anand Hegde" or "Hegde & Co".
 # Example: 
 # Gowramma
 # Infosys Limited
@@ -28,6 +28,7 @@
 # Tip: Use unique surnames or exact legal names to reduce noise.
 # Example: 
 # M/S Seshagiri Rao
+# LRes Judicata Legal & Co. 
 
 # ------------------------------------------------------------------------------
 # TYPE C: EXPLICIT CASE NUMBER MATCHES
@@ -50,3 +51,4 @@
 # Example: 
 # (GM, CPC)
 # (MC, )
+# (GM, MM_S)
