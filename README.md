@@ -39,8 +39,9 @@ A detailed technical report describing the parsing methodology, evaluation, and 
 
 ## Screenshots
 
-### HTML Report
-![HTML Report](screenshots/Figure 6.jpg)
+<p align="center">
+  <img src="screenshots/Figure 6.JPG" alt="Extract from the HTML Report" width="800">
+</p>
 
 HCK Causelist Automation automatically monitors the daily High Court of Karnataka consolidated causelist, matches user-defined watchlist terms, and delivers annotated HTML reports by email using an adaptive PDF parsing algorithm.
 
@@ -69,6 +70,8 @@ This tool does it automatically:
 | `setup_hck_causelist_mailer.sh` | **One-time setup script** — run this first |
 
 ## Repository Structure
+
+```text
 .
 ├── hck_causelist_search.py
 ├── hck_causelist_mailer.py
@@ -77,7 +80,10 @@ This tool does it automatically:
 ├── setup_hck_causelist_mailer.sh
 ├── uninstall_hck_causelist_mailer.sh
 ├── screenshots/
+│   └── figure-6.jpg
+├── LICENSE
 └── README.md
+```
 
 ---
 
