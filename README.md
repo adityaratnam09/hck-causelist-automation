@@ -8,7 +8,9 @@ Automated Daily Monitoring of the High Court of Karnataka Causelist Using Adapti
 
 **hck_causelist_search** is an open-source Python pipeline that automatically downloads the daily consolidated causelist published by the High Court of Karnataka, parses its layout using an adaptive coordinate calibration algorithm based on semantic anchor tokens, matches records against a user-defined watchlist, and delivers annotated HTML reports by email.
 
-A detailed technical report describing the parsing methodology, evaluation, and implementation is available on Zenodo: [DOI: 10.5281/zenodo.21265907].
+A detailed technical report describing the parsing methodology, evaluation, and implementation is available on Zenodo:
+
+https://doi.org/10.5281/zenodo.21265907
 
 ---
 ## Features
