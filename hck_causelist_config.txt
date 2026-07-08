@@ -32,7 +32,7 @@ HTML_OUTPUT_PATH = "./causelist_search.html"
 #   21:00 -> 9:00 PM
 # Note: The master installation script reads this entry dynamically to build and 
 # register the underlying macOS launchd calendar interval rules.
-DAILY_RUN_TIME = 20:30
+DAILY_RUN_TIME = 21:00
 
 # --- OUTBOUND EMAIL DISPATCH PROTOCOLS (SMTP) ---
 # The primary Google Gmail account used to authenticate and transmit outbound alert updates.
