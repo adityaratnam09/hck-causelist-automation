@@ -1,5 +1,5 @@
 # ==============================================================================
-# HIGH COURT OF KARNATAKA CAUSELIST CONFIGURATION PROFILE
+# HIGH COURT OF KARNATAKA CAUSELIST AUTOMATION CONFIGURATION PROFILE
 # ==============================================================================
 # INSTRUCTIONS:
 # - Lines beginning with '#' are comments and are completely ignored by the script.
