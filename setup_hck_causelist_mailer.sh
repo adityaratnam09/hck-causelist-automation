@@ -161,9 +161,11 @@ echo "==========================================================================
 echo "[START] DAILY CAUSELIST PIPELINE: \$(date)"
 echo "=========================================================================="
 
-# 1. Clear stale HTML reports from previous runs to ensure fresh state evaluation
+# 1. Clear stale HTML reports and causelist files from previous runs 
+# this is to ensure fresh state evaluation
 echo "Cleaning up previous report artifacts..."
 rm -f "causelist_search.html"
+rm -f "blrconsolidation.pdf"
 
 # 2. Execute Core Extraction Frame
 echo "Step 1: Initializing parsing engine..."
