@@ -164,7 +164,7 @@ echo "==========================================================================
 # 1. Clear stale HTML reports and causelist files from previous runs 
 # this is to ensure fresh state evaluation
 echo "Cleaning up previous report artifacts..."
-rm -f "causelist_search.html"
+rm -f "hck_causelist_search.html"
 rm -f "blrconsolidation.pdf"
 
 # 2. Execute Core Extraction Frame
@@ -180,7 +180,7 @@ if [ \$PYTHON_EXIT_STATUS -ne 0 ]; then
 fi
 
 # 4. Process the report payload gracefully based on script outcome
-if [ -f "causelist_search.html" ]; then
+if [ -f "hck_causelist_search.html" ]; then
     echo "Step 2: HTML report successfully compiled."
     
     # 5. Trigger Secure Mail Dispatch Routine
