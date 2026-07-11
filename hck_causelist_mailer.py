@@ -11,7 +11,10 @@
 
 import os
 import re
+import sys
+import argparse
 import smtplib
+from datetime import date
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -39,7 +42,7 @@ def load_config(path=CONFIG_FILE):
                 cfg[key] = val
     return cfg
 
-def verify_and_dispatch_alert():
+def verify_and_dispatch_alert(force=False):
     cfg = load_config()
 
     html_path      = cfg.get('HTML_OUTPUT_PATH', './causelist_search.html')
@@ -73,7 +76,41 @@ def verify_and_dispatch_alert():
         print("No watchlist matches found — skipping email.")
         return
 
-    subject = f"{subject_prefix} {total_matches} Tracked Matches Found"
+    # Extract the causelist date from the HTML meta tag written by hck_causelist_search.py.
+    # Include it in the subject so recipients immediately know which day's list this covers.
+    date_meta = re.search(r'<meta name="causelist-date" content="([^"]+)"', html_content)
+    date_display_meta = re.search(r'Causelist date: <b>([^<]+)</b>', html_content)
+    causelist_date_str = date_display_meta.group(1) if date_display_meta else (
+        date_meta.group(1) if date_meta else "")
+    causelist_date_iso = date_meta.group(1) if date_meta else None
+
+    # Staleness check: only email if the causelist is for a future date.
+    # A causelist for today means hearings are already underway or over.
+    # A causelist for a past date means the court did not publish a new one
+    # (weekend, holiday) and the server is still serving the previous working
+    # day's PDF — which is stale.
+    # Pass --force on the command line to override this check.
+    if causelist_date_iso:
+        try:
+            from datetime import date as _date
+            cl_date = _date.fromisoformat(causelist_date_iso)
+            today   = _date.today()
+            if cl_date <= today and not force:
+                print(f"[SKIP] Causelist date ({causelist_date_iso}) is today or in the past. "
+                      f"Email suppressed. Use --force to override.")
+                return
+            if cl_date <= today and force:
+                print(f"[FORCE] Causelist date ({causelist_date_iso}) is today or in the past, "
+                      f"but --force was passed. Sending anyway.")
+        except ValueError:
+            print(f"[WARN] Could not parse causelist date '{causelist_date_iso}' — proceeding without staleness check.")
+    else:
+        print("[WARN] Causelist date not found in HTML — proceeding without staleness check.")
+
+    if causelist_date_str and causelist_date_str != "Date unknown":
+        subject = f"{subject_prefix} {causelist_date_str} — {total_matches} Tracked Matches Found"
+    else:
+        subject = f"{subject_prefix} {total_matches} Tracked Matches Found"
 
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
@@ -96,4 +133,19 @@ def verify_and_dispatch_alert():
         print(f"[ERROR] Failed to send email: {e}")
 
 if __name__ == "__main__":
-    verify_and_dispatch_alert()
+    parser = argparse.ArgumentParser(
+        description="HCK Causelist Mailer — dispatches the HTML report by email.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "By default, email is suppressed if the causelist is dated today or earlier\n"
+            "(stale PDF — court did not publish a new one, or hearings already over).\n"
+            "Use --force to send regardless of the causelist date."
+        )
+    )
+    parser.add_argument(
+        "--force", "-f",
+        action="store_true",
+        help="Send email even if the causelist date is today or in the past."
+    )
+    args = parser.parse_args()
+    verify_and_dispatch_alert(force=args.force)

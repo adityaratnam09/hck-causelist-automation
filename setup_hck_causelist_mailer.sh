@@ -187,6 +187,12 @@ if [ -f "hck_causelist_search.html" ]; then
     if [ -f "hck_causelist_mailer.py" ]; then
         echo "Step 3: Initializing isolated outbound mailer protocol..."
         \$PYTHON_EXEC hck_causelist_mailer.py
+	# Staleness check: By default, the mailer will not send an email 
+	# if the causelist date is today or earlier. To override this 
+	# when testing or resending a past report:
+	# $PYTHON_EXEC hck_causelist_mailer.py --force
+	# or
+	# $PYTHON_EXEC hck_causelist_mailer.py -f
     else
         echo "[ERROR] Outbound mail script frame (hck_causelist_mailer.py) not found."
         exit 1

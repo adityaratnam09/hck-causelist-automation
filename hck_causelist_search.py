@@ -205,16 +205,45 @@ def bold_watchlist_text(text, term, mode="markdown"):
         return pattern.sub(r"<b class='highlight'>\1</b>", text)
     return pattern.sub(r"**\1**", text)
 
-def generate_html_report(grouped_data, output_path, total_pages):
+def extract_causelist_date(pdf_path):
+    """Extract the hearing date string from the PDF header (page 1).
+    Returns a tuple (display_str, iso_str) e.g. ('Friday, 3 July 2026', '2026-07-03'),
+    or (None, None) if the date cannot be parsed."""
+    import pdfplumber
+    from datetime import datetime
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            text = pdf.pages[0].extract_text() or ""
+        m = re.search(
+            r'ON THE DAY OF (\w+) THE (\d+)(?:st|nd|rd|th)? Day Of (\w+) (\d{4})',
+            text, re.IGNORECASE
+        )
+        if not m:
+            return None, None
+        weekday, day, month, year = m.group(1), m.group(2), m.group(3), m.group(4)
+        dt = datetime.strptime(f"{day} {month} {year}", "%d %B %Y")
+        display = f"{weekday.capitalize()}, {dt.day} {dt.strftime('%B %Y')}"
+        iso     = dt.strftime("%Y-%m-%d")
+        return display, iso
+    except Exception:
+        return None, None
+
+
+def generate_html_report(grouped_data, output_path, total_pages, causelist_date=None, causelist_date_iso=None):
     """Compiles matching case profiles into an HTML reporting sheet."""
     total_matches = sum(len(records) for records in grouped_data.values())
     
+    date_display = causelist_date or "Date unknown"
+    date_iso     = causelist_date_iso or ""
+    title_str    = f"Causelist Report — {date_display}" if causelist_date else "Causelist Search Report"
+
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Causelist Search Report</title>
+    <meta name="causelist-date" content="{date_iso}">
+    <title>{title_str}</title>
     <style>
         :root {{
             --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -367,7 +396,7 @@ def generate_html_report(grouped_data, output_path, total_pages):
         <div class="header">
             <h1>Causelist Search Report</h1>
             <div class="meta-summary">
-                Processed pages: <b>{total_pages}</b> &nbsp;|&nbsp; Total active matches found: <b>{total_matches}</b>
+                Causelist date: <b>{date_display}</b> &nbsp;|&nbsp; Processed pages: <b>{total_pages}</b> &nbsp;|&nbsp; Total active matches found: <b>{total_matches}</b>
             </div>
         </div>
 """
@@ -738,7 +767,14 @@ def parse_and_search_pdf(pdf_path, watchlist):
     # Uncomment the line below to print a full match summary to stdout (useful for debugging).
     # print_console_report(final_cleaned_grouped_data, total_pages)
 
-    generate_html_report(final_cleaned_grouped_data, HTML_OUTPUT_PATH, total_pages)
+    causelist_date, causelist_date_iso = extract_causelist_date(LOCAL_PDF_PATH)
+    if causelist_date:
+        print(f"Causelist date: {causelist_date}")
+    else:
+        print("Causelist date: could not be extracted from PDF header.")
+
+    generate_html_report(final_cleaned_grouped_data, HTML_OUTPUT_PATH, total_pages,
+                         causelist_date=causelist_date, causelist_date_iso=causelist_date_iso)
     print(f"\n[Success] HTML report exported to '{HTML_OUTPUT_PATH}' — {total_found_overall} matches across {len([t for t,r in final_cleaned_grouped_data.items() if r])} active term(s).")
 
 def print_console_report(final_cleaned_grouped_data, total_pages):
