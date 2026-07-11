@@ -22,7 +22,7 @@ https://doi.org/10.5281/zenodo.21265907
 - Monitors classification categories.
 - Generates searchable HTML reports.
 - Highlights matched watchlist terms.
-- Sends reports automatically by email.
+- Sends reports automatically by email, if the causelist is not stale. 
 - Runs unattended using macOS launchd.
 - Adaptive coordinate calibration using semantic anchor tokens.
 - Automatically adapts to different court-hall layouts.
