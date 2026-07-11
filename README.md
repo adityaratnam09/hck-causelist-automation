@@ -194,7 +194,7 @@ To override this when testing or to resend a past report:
 ```bash
 python3 hck_causelist_mailer.py --force
 ```
-# or 
+or 
 
 ```bash
 python3 hck_causelist_mailer.py -f
