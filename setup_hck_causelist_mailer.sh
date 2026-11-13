@@ -1,3 +1,4 @@
+#!/bin/bash
 # ==============================================================================
 # FILE: setup_hck_causelist_mailer.sh
 # DESCRIPTION: Master Infrastructure Deployment Script
@@ -9,7 +10,6 @@
 # LaunchAgent wrapper targeting user-configured execution intervals.
 # ==============================================================================
 
-#!/bin/bash
 
 # Ensure standard Homebrew installation paths are visible to non-interactive/GUI environments
 # Prepend pyenv shims so the app finds your active Python, and append Homebrew at the end as a fallback
@@ -139,6 +139,7 @@ RUNNER_SCRIPT="$CURRENT_DIR/run_hck_causelist_mailer.sh"
 
 # Inject absolute working directories and python path into the runner script
 cat << EOF > "$RUNNER_SCRIPT"
+#!/bin/bash
 # ==============================================================================
 # FILE: run_hck_causelist_mailer.sh
 # DESCRIPTION: Dynamic Automation Execution Wrapper
@@ -148,8 +149,6 @@ cat << EOF > "$RUNNER_SCRIPT"
 # required runtime environment paths, isolates the project directory workspace,
 # and sequences the core text-scraping and outbound dispatch components.
 # ==============================================================================
-
-#!/bin/bash
 
 # --- AUTOMATICALLY GENERATED PROFILE CONFIGURATION ---
 PROJECT_DIR="$CURRENT_DIR"
@@ -186,13 +185,12 @@ if [ -f "hck_causelist_search.html" ]; then
     # 5. Trigger Secure Mail Dispatch Routine
     if [ -f "hck_causelist_mailer.py" ]; then
         echo "Step 3: Initializing isolated outbound mailer protocol..."
-        \$PYTHON_EXEC hck_causelist_mailer.py
+        # Any arguments given to this script (e.g. --force / -f) are passed to the mailer
+        \$PYTHON_EXEC hck_causelist_mailer.py "\$@"
 	# Staleness check: By default, the mailer will not send an email 
 	# if the causelist date is today or earlier. To override this 
 	# when testing or resending a past report:
-	# $PYTHON_EXEC hck_causelist_mailer.py --force
-	# or
-	# $PYTHON_EXEC hck_causelist_mailer.py -f
+	#  ./run_hck_causelist_mailer.sh --force   (or -f)
     else
         echo "[ERROR] Outbound mail script frame (hck_causelist_mailer.py) not found."
         exit 1

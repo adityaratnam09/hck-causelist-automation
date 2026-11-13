@@ -202,8 +202,18 @@ python3 hck_causelist_mailer.py -f
 
 **Run both in sequence** (same as launchctl):
 ```bash
-bash run_hck_causelist_mailer.sh
+./run_hck_causelist_mailer.sh
 ```
+
+**Force a full run** (search + email, bypassing the staleness check):
+```bash
+./run_hck_causelist_mailer.sh --force
+```
+or
+```bash
+./run_hck_causelist_mailer.sh -f
+```
+The runner passes any arguments it receives straight through to `hck_causelist_mailer.py`, so `--force` / `-f` behave exactly as they do when calling the mailer directly. The scheduled launchd run passes no arguments, so the staleness check stays on for daily runs.
 
 Pipeline logs are written to `logs/launchd_output.log` and `logs/launchd_error.log`.
 
@@ -234,7 +244,7 @@ Key design decisions:
 - **Section-divider rejection**: centred section-title rows (e.g. `HEARING - INTERLOCUTORY APPLN`, `PRONOUNCEMENT OF JUDGMENT - 2:30 PM`) are geometrically identified and discarded before they can contaminate party text.
 - **Merged-token handling**: when pdfplumber merges adjacent words into a single token (e.g. `SAVITHRAMMARES:` for a petitioner named SAVITHRAMMA followed immediately by `RES:`), the parser interpolates the correct split position from character proportions.
 - **Classification matching**: the case number and classification parenthetical (e.g. `(GW, )`) are included in the searchable text, enabling category-level monitoring as a first-class feature.
-- **Staleness checks**:the causelist date (extracted from the PDF page 1 header) is embedded in the HTML report as a machine-readable <meta> tag and a visible field in the report header. The mailer reads this date to decide whether to send: causelists dated today or earlier are suppressed automatically; --force overrides this.
+- **Staleness checks**:the causelist date (extracted from the PDF page 1 header) is embedded in the HTML report as a machine-readable <meta> tag and a visible field in the report header. The mailer reads this date to decide whether to send: causelists dated today or earlier are suppressed automatically; --force (or -f) overrides this, whether passed to the mailer directly or to `run_hck_causelist_mailer.sh`.
 
 ---
 
